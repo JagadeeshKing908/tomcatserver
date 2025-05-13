@@ -1,31 +1,29 @@
 --- 
 - hosts: node1
   connection: ssh
-  become: yes
-  
   tasks:
     - name: Install java
-	    command: yum install java-1.8.0-openjdk -yum -y
+      command: yum install java-1.8.0-openjdk -y
 	   
-	 - name: Gtting link from web
-	   get_url:
-	     url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.100/bin/apache-tomcat-9.0.100.tar.gz"
-		   dest: "/root"
+    - name: Gtting link from web
+      get_url:
+         url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.100/bin/apache-tomcat-9.0.100.tar.gz"
+         dest: "/root"
 		 
-  	- name: untar the file
-	    unarchive: path="/root/apache-tomcat-9.0.100.tar.gz"  
+     - name: untar the file
+       unarchive: path="/root/apache-tomcat-9.0.100.tar.gz"  
 	  
-	  - name: copy the file context.xml                         
-	    copy:
-	      src: "context.xml"
-	      dest: "/root/apache-tomcat-9.0.100/webapps/manager/META-INF/context.xml"
+     - name: copy the file context.xml                         
+       copy:
+	 src: "context.xml"
+	 dest: "/root/apache-tomcat-9.0.100/webapps/manager/META-INF/context.xml"
 	   
-	  - name: copy the file tomcatusers.xml
-	    copy:
-	      src: "tomcatusers.xml"
-		    dest: "/root/apache-tomcat-9.0.100/conf/tomcatusers.xm"
+      - name: copy the file tomcatusers.xml
+	copy:
+	  src: "tomcatusers.xml"
+	  dest: "/root/apache-tomcat-9.0.100/conf/tomcatusers.xm"
 		
-	  - name: start tomcat
-	    shell: nohup /root/apache-tomcat-9.0.100/bin/startup.shell
+      - name: start tomcat
+	shell: nohup /root/apache-tomcat-9.0.100/bin/startup.shell
 	  
 ...
