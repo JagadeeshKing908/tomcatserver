@@ -1,34 +1,31 @@
----
+--- 
 - hosts: node1
+  connection: ssh
   become: yes
+  
   tasks:
-    - name: Install Java
-      yum:
-        name: java-1.8.0-openjdk
-        state: present
-
-    - name: Download Tomcat archive
-      get_url:
-        url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.100/bin/apache-tomcat-9.0.100.tar.gz"
-        dest: "/root/apache-tomcat-9.0.100.tar.gz"
-
-    - name: Extract Tomcat archive
-      unarchive:
-        src: "/root/apache-tomcat-9.0.100.tar.gz"
-        dest: "/root/"
-        remote_src: yes
-
-    - name: Copy context.xml
-      copy:
-        src: "context.xml"
-        dest: "/root/apache-tomcat-9.0.100/webapps/manager/META-INF/context.xml"
-
-    - name: Copy tomcat-users.xml
-      copy:
-        src: "tomcatusers.xml"
-        dest: "/root/apache-tomcat-9.0.100/conf/tomcat-users.xml"
-
-    - name: Start Tomcat
-      shell: nohup /root/apache-tomcat-9.0.100/bin/startup.sh &
-      args:
-        executable: /bin/bash
+    - name: Install java
+	    command: yum install java-1.8.0-openjdk -yum -y
+	   
+	 - name: Gtting link from web
+	   get_url:
+	     url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.100/bin/apache-tomcat-9.0.100.tar.gz"
+		   dest: "/root"
+		 
+  	- name: untar the file
+	    unarchive: path="/root/apache-tomcat-9.0.100.tar.gz"  
+	  
+	  - name: copy the file context.xml                         
+	    copy:
+	      src: "context.xml"
+	      dest: "/root/apache-tomcat-9.0.100/webapps/manager/META-INF/context.xml"
+	   
+	  - name: copy the file tomcatusers.xml
+	    copy:
+	      src: "tomcatusers.xml"
+		    dest: "/root/apache-tomcat-9.0.100/conf/tomcatusers.xm"
+		
+	  - name: start tomcat
+	    shell: nohup /root/apache-tomcat-9.0.100/bin/startup.shell
+	  
+...
